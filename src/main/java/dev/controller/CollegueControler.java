@@ -29,8 +29,11 @@ public class CollegueControler {
 
 	@RequestMapping(value = "/collegues", method = RequestMethod.POST)
 	public Collegue SaveCollegue(@RequestBody Collegue collegue) {
-		cr.save(collegue);
-		return cr.findByNom(collegue.getNom());
+		if (cr.findByNom(collegue.getNom()) == null) {
+			cr.save(collegue);
+			return cr.findByNom(collegue.getNom());
+		}
+		return null;
 	}
 
 	@RequestMapping(value = "/collegues/{nom}", method = RequestMethod.PATCH)
