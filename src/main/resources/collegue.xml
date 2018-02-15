@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+	<bean id="col1" class="dev.entite.Collegue">
+		<property name="nom" value="Vincent"></property>
+		<property name="imageUrl" value="https://images-na.ssl-images-amazon.com/images/I/411RzrsBmBL._SY300_.jpg"></property>
+		<property name="score" value="50"></property>
+	</bean>
+	<bean id="col2" class="dev.entite.Collegue">
+		<property name="nom" value="Leila"></property>
+		<property name="imageUrl" value="https://images-na.ssl-images-amazon.com/images/I/411RzrsBmBL._SY300_.jpg"></property>
+		<property name="score" value="50"></property>
+	</bean>
+	<bean id="col3" class="dev.entite.Collegue">
+		<property name="nom" value="Zacchari"></property>
+		<property name="imageUrl" value="https://images-na.ssl-images-amazon.com/images/I/411RzrsBmBL._SY300_.jpg"></property>
+		<property name="score" value="50"></property>
+	</bean>
+	<bean id="col4" class="dev.entite.Collegue">
+		<property name="nom" value="Jordan"></property>
+		<property name="imageUrl" value="https://images-na.ssl-images-amazon.com/images/I/411RzrsBmBL._SY300_.jpg"></property>
+		<property name="score" value="50"></property>
+	</bean>
+	
+	<bean id="col5" class="dev.entite.Collegue">
+		<property name="nom" value="Remi"></property>
+		<property name="imageUrl" value="https://images-na.ssl-images-amazon.com/images/I/411RzrsBmBL._SY300_.jpg"></property>
+		<property name="score" value="50"></property>
+	</bean>
+</beans>
