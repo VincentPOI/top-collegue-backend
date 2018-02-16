@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,18 +24,22 @@ public class CollegueControler {
 	private CollegueRepository cr;
 
 	@RequestMapping(value = "/collegues", method = RequestMethod.GET)
-
 	public List<Collegue> findAllCollegue() {
 		return cr.findAll();
 	}
 
 	@RequestMapping(value = "/collegues", method = RequestMethod.POST)
-	public Collegue SaveCollegue(@RequestBody Collegue collegue) {
+	public ResponseEntity<Collegue> SaveCollegue(@RequestBody Collegue collegue) {
 		if (cr.findByNom(collegue.getNom()) == null) {
 			cr.save(collegue);
-			return cr.findByNom(collegue.getNom());
+			return ResponseEntity.status(HttpStatus.OK).body(cr.findByNom(collegue.getNom()));
 		}
-		return null;
+		return ResponseEntity.notFound().build();
+	}
+
+	@RequestMapping(value = "/collegues/{nom}", method = RequestMethod.GET)
+	public Collegue FindCollegueByNom(@PathVariable String nom) {
+		return cr.findByNom(nom);
 	}
 
 	@RequestMapping(value = "/collegues/{nom}", method = RequestMethod.PATCH)
