@@ -1,7 +1,9 @@
 package dev.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,10 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.entite.Collegue;
+import dev.entite.Vote;
+import dev.entite.Vote.AVIS;
 import dev.repository.CollegueRepository;
+import dev.repository.VoteRepository;
 
 @RestController
 @CrossOrigin
@@ -22,6 +28,8 @@ public class CollegueControler {
 
 	@Autowired
 	private CollegueRepository cr;
+	@Autowired
+	private VoteRepository vr;
 
 	@RequestMapping(value = "/collegues", method = RequestMethod.GET)
 	public List<Collegue> findAllCollegue() {
@@ -48,12 +56,28 @@ public class CollegueControler {
 		Collegue c = cr.findByNom(nom);
 
 		if (action.get("action").equals("aimer")) {
+			vr.save(new Vote(cr.findByNom(nom), AVIS.LIKE));
 			c.setScore(c.getScore() + 10);
 		} else if (action.get("action").equals("detester")) {
+			vr.save(new Vote(cr.findByNom(nom), AVIS.DISLIKE));
 			c.setScore(c.getScore() - 5);
 		}
 		cr.save(c);
 		return cr.findOne(c.getId());
+	}
+
+	@RequestMapping(value = "/votes", method = RequestMethod.GET)
+	public List<Vote> findVotes(@RequestParam(value = "since") Optional<Integer> voteId) {
+		int length = vr.findAll().size();
+		int id = length - 2;
+		List<Vote> votes = new ArrayList<>();
+		if (voteId.isPresent()) {
+			id = voteId.get();
+		}
+		for (int i = id; i <= length; i++) {
+			votes.add(vr.findOne(i));
+		}
+		return votes;
 	}
 
 }
