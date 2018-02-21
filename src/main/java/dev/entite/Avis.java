@@ -2,8 +2,6 @@ package dev.entite;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,32 +9,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "VOTE")
-public class Vote {
-
-	public enum AVIS {
-		LIKE("aimé"), DISLIKE("détesté");
-		private String avis = "";
-
-		private AVIS(String avis) {
-			this.avis = avis;
-		}
-
-		public String toString() {
-			return this.avis;
-		}
-	}
+@Table(name = "AVIS")
+public class Avis {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Integer id;
-
 	@ManyToOne
 	private Collegue col;
-	@Column(name = "AVIS")
-	@Enumerated(EnumType.STRING)
-	private AVIS avis;
+	@Column(name = "COMMENTAIRE")
+	private String commentaire;
 
 	public Integer getId() {
 		return id;
@@ -54,21 +37,15 @@ public class Vote {
 		this.col = col;
 	}
 
-	public AVIS getAvis() {
-		return avis;
+	public String getCommentaire() {
+		return commentaire;
 	}
 
-	public void setAvis(AVIS avis) {
-		this.avis = avis;
+	public void setCommentaire(String commentaire) {
+		this.commentaire = commentaire;
 	}
 
-	public Vote() {
-	}
-
-	public Vote(Collegue col, AVIS avis) {
-		super();
-		this.col = col;
-		this.avis = avis;
+	public Avis() {
 	}
 
 }

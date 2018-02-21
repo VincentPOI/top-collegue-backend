@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.entite.Avis;
 import dev.entite.Collegue;
 import dev.entite.Vote;
 import dev.entite.Vote.AVIS;
+import dev.repository.AvisRepository;
 import dev.repository.CollegueRepository;
 import dev.repository.VoteRepository;
 
@@ -30,6 +32,8 @@ public class CollegueControler {
 	private CollegueRepository cr;
 	@Autowired
 	private VoteRepository vr;
+	@Autowired
+	private AvisRepository ar;
 
 	@RequestMapping(value = "/collegues", method = RequestMethod.GET)
 	public List<Collegue> findAllCollegue() {
@@ -56,10 +60,10 @@ public class CollegueControler {
 		Collegue c = cr.findByNom(nom);
 
 		if (action.get("action").equals("aimer")) {
-			vr.save(new Vote(cr.findByNom(nom), AVIS.LIKE));
+			vr.save(new Vote(c, AVIS.LIKE));
 			c.setScore(c.getScore() + 10);
 		} else if (action.get("action").equals("detester")) {
-			vr.save(new Vote(cr.findByNom(nom), AVIS.DISLIKE));
+			vr.save(new Vote(c, AVIS.DISLIKE));
 			c.setScore(c.getScore() - 5);
 		}
 		cr.save(c);
@@ -78,6 +82,17 @@ public class CollegueControler {
 			votes.add(vr.findOne(i));
 		}
 		return votes;
+	}
+
+	@RequestMapping(value = "/avis/{nom}", method = RequestMethod.GET)
+	public List<Avis> getAvis(@PathVariable String nom) {
+		Collegue c = cr.findByNom(nom);
+		return ar.findByCol(c);
+	}
+
+	@RequestMapping(value = "/avis", method = RequestMethod.POST)
+	public Avis SaveAvis(@RequestBody Avis avis) {
+		return ar.save(avis);
 	}
 
 }
